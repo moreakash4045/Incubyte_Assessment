@@ -1,0 +1,18 @@
+# Validation checks function
+def validate_data(df):
+    # Check for mandatory fields
+    mandatory_columns = ["Customer_Name", "Customer_Id", "Open_Date"]
+    for col_name in mandatory_columns:
+        if df.filter(col(col_name).isNull()).count() > 0:
+            raise ValueError(f"Mandatory column {col_name} has null values.")
+    
+    # Check for valid date formats (custom logic here)
+    invalid_date_format_count = df.filter(
+        (col("Open_Date").isNull()) | (col("Last_Consulted_Date").isNull())
+    ).count()
+    
+    if invalid_date_format_count > 0:
+        raise ValueError("Invalid date formats found.")
+        
+# Validate the staging DataFrame
+validate_data(staging_df)
