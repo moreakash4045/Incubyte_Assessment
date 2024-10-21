@@ -1,0 +1,32 @@
+%sql
+-- Drop the existing table if it exists
+DROP TABLE IF EXISTS Staging_Customers;
+
+-- Create the staging table
+CREATE TABLE Staging_Customers (
+    Customer_Name VARCHAR(255),
+    Customer_Id VARCHAR(18),
+    Open_Date DATE,
+    Last_Consulted_Date DATE,
+    Vaccination_Id CHAR(5),
+    Dr_Name VARCHAR(255),
+    State CHAR(5),
+    Country CHAR(5),
+    DOB DATE,
+    Is_Active CHAR(1)
+);
+
+
+-- Create the staging table if it does not exist
+CREATE TABLE IF NOT EXISTS Staging_Customers (
+    Customer_Name VARCHAR(255),
+    Customer_Id VARCHAR(18),
+    Open_Date DATE,
+    Last_Consulted_Date DATE,
+    Vaccination_Id CHAR(5),
+    Dr_Name VARCHAR(255),
+    State CHAR(5),
+    Country CHAR(5),
+    DOB DATE,
+    Is_Active CHAR(1)
+);
