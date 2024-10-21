@@ -1,0 +1,26 @@
+from pyspark.sql import SparkSession
+from pyspark.sql import Row
+from pyspark.sql.functions import col, datediff, current_date, year
+
+# Create Spark session
+spark = SparkSession.builder.appName("HospitalETL").getOrCreate()
+
+# Sample data as a list of Rows
+data = [
+    Row(Customer_Name="Alex", Customer_Id="123457", Open_Date="2010-10-12", Last_Consulted_Date="2012-10-13",
+        Vaccination_Id="MVD", Dr_Name="Paul", State="SA", Country="USA", DOB="1987-03-06", Is_Active="A"),
+    Row(Customer_Name="John", Customer_Id="123458", Open_Date="2010-10-12", Last_Consulted_Date="2012-10-13",
+        Vaccination_Id="MVD", Dr_Name="Paul", State="TN", Country="IND", DOB="1987-03-06", Is_Active="A"),
+    Row(Customer_Name="Mathew", Customer_Id="123459", Open_Date="2010-10-12", Last_Consulted_Date="2012-10-13",
+        Vaccination_Id="MVD", Dr_Name="Paul", State="WAS", Country="PHIL", DOB="1987-03-06", Is_Active="A"),
+    Row(Customer_Name="Matt", Customer_Id="12345", Open_Date="2010-10-12", Last_Consulted_Date="2012-10-13",
+        Vaccination_Id="MVD", Dr_Name="Paul", State="BOS", Country="NYC", DOB="1987-03-06", Is_Active="A"),
+    Row(Customer_Name="Jacob", Customer_Id="1256", Open_Date="2010-10-12", Last_Consulted_Date="2012-10-13",
+        Vaccination_Id="MVD", Dr_Name="Paul", State="VIC", Country="AU", DOB="1987-03-06", Is_Active="A")
+]
+
+# Create DataFrame
+df = spark.createDataFrame(data)
+
+# Write the DataFrame to the staging table
+df.write.mode("overwrite").insertInto("Staging_Customers")
