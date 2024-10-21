@@ -1,0 +1,15 @@
+# Load data from the Staging Table
+staging_df = spark.sql("SELECT * FROM Staging_Customers")
+
+# Derive Age and Days Since Last Consulted
+processed_df = staging_df.withColumn("Age", 
+                                      year(current_date()) - year(col("DOB"))) \
+                          .withColumn("Days_Since_Last_Consulted", 
+                                      datediff(current_date(), col("Last_Consulted_Date")))
+
+# Filter and save processed data to the Table_India
+processed_df.filter(col("Country") == "IND") \
+            .select("Customer_Name", "Customer_Id", "Open_Date", "Last_Consulted_Date", 
+                    "Vaccination_Id", "Dr_Name", "State", "Country", "DOB", "Is_Active", 
+                    "Age", "Days_Since_Last_Consulted") \
+            .write.mode("append").insertInto("Table_India")
